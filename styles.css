@@ -1,3 +1,4 @@
+/* General body styling */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -9,32 +10,36 @@ body {
     background-attachment: fixed;
 }
 
+/* Header styling */
 header {
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    background-color: rgba(0, 0, 0, 0.6);
     color: #ffffff;
     padding: 20px;
     text-align: center;
 }
 
+/* Navigation bar styling */
 nav {
-    background-color: rgba(0, 0, 0, 0.8); /* Darker, semi-transparent black */
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 10px;
     text-align: center;
 }
 
-nav a {
-    color: #88BDBC;
+/* Link styling */
+nav a, a {
+    color: #88BDBC; /* Change this color to suit your design */
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
 }
 
-nav a:hover {
+nav a:hover, a:hover {
     text-decoration: underline;
 }
 
+/* Footer styling */
 footer {
-    background-color: rgba(0, 0, 0, 0.8); /* Same as nav */
+    background-color: rgba(0, 0, 0, 0.8);
     color: #88BDBC;
     padding: 10px;
     text-align: center;
@@ -43,25 +48,17 @@ footer {
     width: 100%;
 }
 
-.hero-section {
-    padding: 100px 20px;
-    text-align: center;
-    color: #ffffff;
-}
-
-.hero-section h1, .hero-section p {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow to make text readable */
-}
-
+/* Container and text section styling */
 .container {
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5); /* Slightly transparent for readability */
+    background-color: rgba(0, 0, 0, 0.5);
     color: #ffffff;
     border-radius: 8px;
     max-width: 800px;
-    margin: 20px auto; /* Center the container */
+    margin: 20px auto;
 }
 
+/* Heading styles */
 h1 {
     color: #88BDBC;
 }
