@@ -1,26 +1,26 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f1f3f4;
+    background-color: #6E6658;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: #4F4A41;
 }
 
 header {
-    background-color: #1a73e8;
-    color: white;
+    background-color: #88BDBC;
+    color: #4F4A41;
     padding: 20px;
     text-align: center;
 }
 
 nav {
-    background-color: #34a853;
+    background-color: #254E58;
     padding: 10px;
     text-align: center;
 }
 
 nav a {
-    color: white;
+    color: #88BDBC;
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
@@ -31,8 +31,8 @@ nav a:hover {
 }
 
 footer {
-    background-color: #1a73e8;
-    color: white;
+    background-color: #254E58;
+    color: #88BDBC;
     padding: 10px;
     text-align: center;
     position: fixed;
@@ -42,17 +42,18 @@ footer {
 
 .container {
     padding: 20px;
+    background-color: #4F4A41;
+    color: #F1F1F1;
 }
 
 h1 {
-    color: #1a73e8;
+    color: #112D32;
 }
 
 h2 {
-    color: #34a853;
+    color: #254E58;
 }
 
 .highlight {
-    color: #fbbc05;
+    color: #88BDBC;
 }
-
