@@ -25,15 +25,15 @@ nav {
     text-align: center;
 }
 
-/* Link styling */
-nav a, a {
+/* Link styling in the navigation */
+nav a {
     color: #88BDBC; /* Change this color to suit your design */
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
 }
 
-nav a:hover, a:hover {
+nav a:hover {
     text-decoration: underline;
 }
 
@@ -46,6 +46,17 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+/* Specific link styling within the container */
+.container a {
+    color: #88BDBC; /* Change this color to suit your design */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container a:hover {
+    text-decoration: underline;
 }
 
 /* Container and text section styling */
