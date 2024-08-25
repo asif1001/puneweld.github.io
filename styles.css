@@ -27,7 +27,7 @@ nav {
 
 /* Link styling in the navigation */
 nav a {
-    color: #88BDBC; /* Change this color to suit your design */
+    color: #88BDBC;
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
@@ -50,13 +50,13 @@ footer {
 
 /* Specific link styling within the container */
 .container a {
-    color: #88BDBC; /* Change this color to suit your design */
-    text-decoration: none;
+    color: #88BDBC !important; /* Force the color change */
+    text-decoration: none !important; /* Remove underline */
     font-weight: bold;
 }
 
 .container a:hover {
-    text-decoration: underline;
+    text-decoration: underline !important; /* Add underline on hover */
 }
 
 /* Container and text section styling */
