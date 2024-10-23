@@ -22,55 +22,67 @@
     <div class="container">
         <h2>Our Products & Services</h2>
 
-        <div class="service-item">
-            <h3>1. Industrialized Fabrication Services</h3>
-            <p>Comprehensive metal fabrication solutions tailored for industrial applications, including custom machinery parts and structural components.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>2. Rolling Shutters</h3>
-            <p>Manufacturing and installation of durable, secure rolling shutters for commercial, industrial, and residential properties. Custom designs available.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>3. Sliding Gates</h3>
-            <p>Fabrication and installation of smooth-operating sliding gates for enhanced security and accessibility, in various designs and materials.</p>
-        </div>
-
-        <div class="service-item">
-            <img src="images/Fireexitstair.jpg" alt="Fire Exit Steel Staircases" style="width:100%; max-width:600px; height:auto;">
-            <h3>4. Emergency Fire Exit Steel Staircases</h3>
-            <p>Design, fabrication, and installation of robust steel staircases for emergency fire exits, compliant with safety regulations and standards.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>5. Trolleys for Automobile Industries</h3>
-            <p>Custom-designed trolleys tailored for use in automotive manufacturing and assembly lines, engineered for durability and efficiency.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>6. Roof Top Sheet Fitting</h3>
-            <p>Installation of high-quality roofing sheets for industrial, commercial, and residential buildings, using various materials like metal sheets.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>7. Window Grills</h3>
-            <p>Fabrication and installation of custom window grills for security and decorative purposes, available in various designs and finishes.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>8. Warehouse Construction</h3>
-            <p>End-to-end solutions for the construction of industrial warehouses, including steel frame construction, roofing, and cladding.</p>
-        </div>
-
-        <div class="service-item">
-            <h3>9. All Types of Fabrication Works</h3>
-            <p>Expertise in a wide range of fabrication services, including custom metalwork, structural fabrication, and specialized projects.</p>
-        </div>
+        <!-- This is where the products will be dynamically inserted -->
+        <div id="products-list"></div>
     </div>
 
     <footer>
         <p>&copy; 2024 PuneWeld Enterprises. All rights reserved.</p>
     </footer>
+
+    <script>
+        async function fetchProducts() {
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT-yKfSdTnZxhF0PcNwfisKpstUO6QDNfisuvlwV7zzmEUZmLEtbeGVCRGZZZXT9TzDxia6tZ4LTdSK/pub?output=csv';
+
+            try {
+                const response = await fetch(url);
+                const data = await response.text();
+
+                // Split the CSV into rows and columns
+                const rows = data.split('\n').slice(1); // Remove the header row
+                const productsList = document.getElementById('products-list');
+
+                rows.forEach(row => {
+                    const cols = row.split(',');
+
+                    // Extract data from columns: [Product Name, Product Description, Product Image URL]
+                    const productName = cols[0].trim();
+                    const productDescription = cols[1].trim();
+                    const productImageUrl = cols[2].trim();
+
+                    // Create the product item element
+                    const productItem = document.createElement('div');
+                    productItem.classList.add('service-item');
+
+                    // Create and append the product name
+                    const productNameElem = document.createElement('h3');
+                    productNameElem.textContent = productName;
+                    productItem.appendChild(productNameElem);
+
+                    // Create and append the product description
+                    const productDescriptionElem = document.createElement('p');
+                    productDescriptionElem.textContent = productDescription;
+                    productItem.appendChild(productDescriptionElem);
+
+                    // Create and append the product image
+                    const productImageElem = document.createElement('img');
+                    productImageElem.src = productImageUrl;
+                    productImageElem.alt = productName;
+                    productImageElem.style.width = '100%';
+                    productImageElem.style.maxWidth = '600px';
+                    productImageElem.style.height = 'auto';
+                    productItem.appendChild(productImageElem);
+
+                    // Append the product item to the product list container
+                    productsList.appendChild(productItem);
+                });
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+            }
+        }
+
+        // Fetch the products once the page loads
+        window.onload = fetchProducts;
+    </script>
 </body>
 </html>
