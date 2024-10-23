@@ -34,8 +34,12 @@
     async function fetchProducts() {
         const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT-yKfSdTnZxhF0PcNwfisKpstUO6QDNfisuvlwV7zzmEUZmLEtbeGVCRGZZZXT9TzDxia6tZ4LTdSK/pub?output=csv';
 
+        // Add a cache-busting query parameter to ensure fresh data is fetched
+        const cacheBuster = new Date().getTime();
+        const fetchUrl = `${url}&cache_buster=${cacheBuster}`;
+
         try {
-            const response = await fetch(url);
+            const response = await fetch(fetchUrl);
             const data = await response.text();
 
             // Split the CSV into rows and columns
@@ -75,8 +79,8 @@
                     const productImageElem = document.createElement('img');
                     productImageElem.src = productImageUrl;
                     productImageElem.alt = productName;
-                    productImageElem.style.width = '75%';
-                    productImageElem.style.maxWidth = '450px';
+                    productImageElem.style.width = '60%'; // Reduced width to 60%
+                    productImageElem.style.maxWidth = '360px'; // Reduced max-width to 360px
                     productImageElem.style.height = 'auto';
 
                     // Fallback to a placeholder image if the image fails to load
@@ -99,7 +103,7 @@
 
     // Fetch the products once the page loads
     window.onload = fetchProducts;
-</script>
+    </script>
 
 </body>
 </html>
