@@ -5,6 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PuneWeld Enterprises - Products & Services</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic styles for the container and the products */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Flexbox for the products list */
+        #products-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Space between items */
+            justify-content: space-between; /* Spacing between items */
+        }
+
+        /* Individual product item styling */
+        .service-item {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            flex: 1 1 calc(33.333% - 20px); /* 3 items per row */
+            box-sizing: border-box;
+        }
+
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .service-item {
+                flex: 1 1 calc(50% - 20px); /* 2 items per row on medium screens */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .service-item {
+                flex: 1 1 100%; /* 1 item per row on small screens */
+            }
+        }
+
+        /* Styling the product image */
+        .service-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -79,9 +152,6 @@
                     const productImageElem = document.createElement('img');
                     productImageElem.src = productImageUrl;
                     productImageElem.alt = productName;
-                    productImageElem.style.width = '60%'; // Reduced width to 60%
-                    productImageElem.style.maxWidth = '360px'; // Reduced max-width to 360px
-                    productImageElem.style.height = 'auto';
 
                     // Fallback to a placeholder image if the image fails to load
                     productImageElem.onerror = () => {
