@@ -68,7 +68,7 @@
                         updateDescriptionElem.textContent = description;
                         updateItem.appendChild(updateDescriptionElem);
 
-                        // Add media (image, video file, or YouTube/Vimeo video)
+                        // Check if the media link is an image or video
                         if (mediaUrl.endsWith('.jpg') || mediaUrl.endsWith('.png')) {
                             // If it's an image, create an image element
                             const mediaElem = document.createElement('img');
