@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PuneWeld Enterprises - Latest Updates</title>
+    <title>PuneWeld Enterprises - Latest Project Updates</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -21,7 +21,7 @@
 
     <div class="container">
         <h2>Latest Project Updates</h2>
-        <div id="updates-list"></div> <!-- Blog section where updates will appear -->
+        <div id="updates-list"></div> <!-- Section where all updates will be displayed -->
     </div>
 
     <footer>
@@ -30,10 +30,10 @@
 
     <script>
         async function fetchUpdates() {
-            // Use the CSV URL for your Google Sheet
+            // URL of your Google Sheets CSV for the updates sheet
             const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQX3Ka3UWFKJSRasFJsHh-KeeLUSdV9hAME6KAYs9TR10HdjKlc-K-1nocwH2_yXWhPV3f4JxfYsE_L/pub?gid=0&single=true&output=csv';
 
-            // Add cache-busting to ensure fresh data is fetched
+            // Cache-busting parameter to ensure fresh data is fetched
             const cacheBuster = new Date().getTime();
             const fetchUrl = `${url}&cache_buster=${cacheBuster}`;
 
@@ -41,10 +41,11 @@
                 const response = await fetch(fetchUrl);
                 const data = await response.text();
 
-                // Split the CSV data into rows and columns
-                const rows = data.split('\n').slice(1); // Remove the header row
+                // Split CSV data into rows and columns
+                const rows = data.split('\n').slice(1); // Skip the header row
                 const updatesList = document.getElementById('updates-list');
 
+                // Loop through each row in the CSV and create an update item for each
                 rows.forEach((row, index) => {
                     const cols = row.split(',');
 
@@ -54,32 +55,32 @@
                         const description = cols[1].trim();
                         const mediaUrl = cols[2].trim();
 
-                        // Create the update item
+                        // Create a container div for each update
                         const updateItem = document.createElement('div');
                         updateItem.classList.add('update-item');
 
-                        // Add update subject
+                        // Add the update subject as a title
                         const updateTitleElem = document.createElement('h3');
                         updateTitleElem.textContent = subject;
                         updateItem.appendChild(updateTitleElem);
 
-                        // Add update description
+                        // Add the update description
                         const updateDescriptionElem = document.createElement('p');
                         updateDescriptionElem.textContent = description;
                         updateItem.appendChild(updateDescriptionElem);
 
-                        // Check if the media link is an image or video
+                        // Handle the media link (image, video, or iframe)
                         if (mediaUrl.endsWith('.jpg') || mediaUrl.endsWith('.png')) {
-                            // If it's an image, create an image element
+                            // If it's an image, create an <img> element
                             const mediaElem = document.createElement('img');
                             mediaElem.src = mediaUrl;
                             mediaElem.alt = subject;
-                            mediaElem.style.width = '100%'; // Adjust width as needed
+                            mediaElem.style.width = '100%'; // Adjust width
                             mediaElem.style.maxWidth = '600px';
                             mediaElem.style.height = 'auto';
                             updateItem.appendChild(mediaElem);
                         } else if (mediaUrl.endsWith('.mp4')) {
-                            // If it's a direct video file (.mp4), create a video element
+                            // If it's a direct video file (.mp4), create a <video> element
                             const videoElem = document.createElement('video');
                             videoElem.src = mediaUrl;
                             videoElem.controls = true;
@@ -88,7 +89,7 @@
                             videoElem.style.height = 'auto';
                             updateItem.appendChild(videoElem);
                         } else if (mediaUrl.includes('youtube.com') || mediaUrl.includes('vimeo.com')) {
-                            // If it's a YouTube/Vimeo link, create an iframe
+                            // If it's a YouTube/Vimeo link, create an <iframe> for embedded video
                             const iframeElem = document.createElement('iframe');
                             iframeElem.src = mediaUrl;
                             iframeElem.width = '600';
@@ -109,7 +110,7 @@
             }
         }
 
-        // Fetch the updates once the page loads
+        // Fetch the updates when the page loads
         window.onload = fetchUpdates;
     </script>
 
