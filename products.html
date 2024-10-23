@@ -42,45 +42,56 @@
                 const rows = data.split('\n').slice(1); // Remove the header row
                 const productsList = document.getElementById('products-list');
 
-                rows.forEach(row => {
+                // Debugging: Log the rows to see the data being fetched
+                console.log("Fetched rows:", rows);
+
+                rows.forEach((row, index) => {
                     const cols = row.split(',');
 
-                    // Extract data from columns: [Product Name, Product Description, Product Image URL]
-                    const productName = cols[0].trim();
-                    const productDescription = cols[1].trim();
-                    const productImageUrl = cols[2].trim();
+                    // Ensure that there are enough columns
+                    if (cols.length >= 3) {
+                        // Debugging: Log the individual columns for each row
+                        console.log(`Row ${index + 1}:`, cols);
 
-                    // Create the product item element
-                    const productItem = document.createElement('div');
-                    productItem.classList.add('service-item');
+                        // Extract data from columns: [Product Name, Product Description, Product Image URL]
+                        const productName = cols[0].trim();
+                        const productDescription = cols[1].trim();
+                        const productImageUrl = cols[2].trim();
 
-                    // Create and append the product name
-                    const productNameElem = document.createElement('h3');
-                    productNameElem.textContent = productName;
-                    productItem.appendChild(productNameElem);
+                        // Create the product item element
+                        const productItem = document.createElement('div');
+                        productItem.classList.add('service-item');
 
-                    // Create and append the product description
-                    const productDescriptionElem = document.createElement('p');
-                    productDescriptionElem.textContent = productDescription;
-                    productItem.appendChild(productDescriptionElem);
+                        // Create and append the product name
+                        const productNameElem = document.createElement('h3');
+                        productNameElem.textContent = productName;
+                        productItem.appendChild(productNameElem);
 
-                    // Create and append the product image with error handling for broken links
-                    const productImageElem = document.createElement('img');
-                    productImageElem.src = productImageUrl;
-                    productImageElem.alt = productName;
-                    productImageElem.style.width = '75%'; // Adjusted to 75% of original size
-                    productImageElem.style.maxWidth = '450px'; // Reduced max width to 450px
-                    productImageElem.style.height = 'auto';
+                        // Create and append the product description
+                        const productDescriptionElem = document.createElement('p');
+                        productDescriptionElem.textContent = productDescription;
+                        productItem.appendChild(productDescriptionElem);
 
-                    // Fallback to a placeholder image if the image fails to load
-                    productImageElem.onerror = () => {
-                        productImageElem.src = 'https://via.placeholder.com/450'; // Replace with any default image URL
-                    };
+                        // Create and append the product image with error handling for broken links
+                        const productImageElem = document.createElement('img');
+                        productImageElem.src = productImageUrl;
+                        productImageElem.alt = productName;
+                        productImageElem.style.width = '75%'; // Adjusted to 75% of original size
+                        productImageElem.style.maxWidth = '450px'; // Reduced max width to 450px
+                        productImageElem.style.height = 'auto';
 
-                    productItem.appendChild(productImageElem);
+                        // Fallback to a placeholder image if the image fails to load
+                        productImageElem.onerror = () => {
+                            productImageElem.src = 'https://via.placeholder.com/450'; // Replace with any default image URL
+                        };
 
-                    // Append the product item to the product list container
-                    productsList.appendChild(productItem);
+                        productItem.appendChild(productImageElem);
+
+                        // Append the product item to the product list container
+                        productsList.appendChild(productItem);
+                    } else {
+                        console.warn(`Row ${index + 1} is missing columns:`, row);
+                    }
                 });
             } catch (error) {
                 console.error('Error fetching product data:', error);
