@@ -68,7 +68,7 @@
                         updateDescriptionElem.textContent = description;
                         updateItem.appendChild(updateDescriptionElem);
 
-                        // Add media (image or video)
+                        // Add media (image, video file, or YouTube/Vimeo video)
                         if (mediaUrl.endsWith('.jpg') || mediaUrl.endsWith('.png')) {
                             // If it's an image, create an image element
                             const mediaElem = document.createElement('img');
@@ -78,8 +78,17 @@
                             mediaElem.style.maxWidth = '600px';
                             mediaElem.style.height = 'auto';
                             updateItem.appendChild(mediaElem);
+                        } else if (mediaUrl.endsWith('.mp4')) {
+                            // If it's a direct video file (.mp4), create a video element
+                            const videoElem = document.createElement('video');
+                            videoElem.src = mediaUrl;
+                            videoElem.controls = true;
+                            videoElem.style.width = '100%';
+                            videoElem.style.maxWidth = '600px';
+                            videoElem.style.height = 'auto';
+                            updateItem.appendChild(videoElem);
                         } else if (mediaUrl.includes('youtube.com') || mediaUrl.includes('vimeo.com')) {
-                            // If it's a video URL, create an iframe
+                            // If it's a YouTube/Vimeo link, create an iframe
                             const iframeElem = document.createElement('iframe');
                             iframeElem.src = mediaUrl;
                             iframeElem.width = '600';
