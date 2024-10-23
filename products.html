@@ -32,7 +32,7 @@
 
     <script>
         async function fetchProducts() {
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT-yKfSdTnZxhF0PcNwfisKpstUO6QDNfisuvlwV7zzmEUZmLEtbeGVCRGZZZXT9TzDxia6tZ4LTdSK/pub?output=csv'; 
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT-yKfSdTnZxhF0PcNwfisKpstUO6QDNfisuvlwV7zzmEUZmLEtbeGVCRGZZZXT9TzDxia6tZ4LTdSK/pub?output=csv';
 
             try {
                 const response = await fetch(url);
@@ -64,13 +64,19 @@
                     productDescriptionElem.textContent = productDescription;
                     productItem.appendChild(productDescriptionElem);
 
-                    // Create and append the product image
+                    // Create and append the product image with error handling for broken links
                     const productImageElem = document.createElement('img');
                     productImageElem.src = productImageUrl;
                     productImageElem.alt = productName;
                     productImageElem.style.width = '75%'; // Adjusted to 75% of original size
                     productImageElem.style.maxWidth = '450px'; // Reduced max width to 450px
                     productImageElem.style.height = 'auto';
+
+                    // Fallback to a placeholder image if the image fails to load
+                    productImageElem.onerror = () => {
+                        productImageElem.src = 'https://via.placeholder.com/450'; // Replace with any default image URL
+                    };
+
                     productItem.appendChild(productImageElem);
 
                     // Append the product item to the product list container
