@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PuneWeld Enterprises - About Us</title>
+    <title>PuneWeld Enterprises - Latest Updates</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -20,14 +20,89 @@
     </nav>
 
     <div class="container">
-        <h2>About PuneWeld Enterprises</h2>
-        <p>Founded in 2024, PuneWeld Enterprises has become a leading provider of welding solutions, known for our commitment to quality and customer satisfaction.</p>
-        <p>Our mission is to deliver exceptional welding products and services that help our clients achieve their goals with precision and efficiency.</p>
-        <p>We pride ourselves on our expertise and our ability to offer innovative solutions to meet the evolving needs of the welding industry.</p>
+        <h2>Latest Project Updates</h2>
+        <div id="updates-list"></div> <!-- Blog section where updates will appear -->
     </div>
 
     <footer>
         <p>&copy; 2024 PuneWeld Enterprises. All rights reserved.</p>
     </footer>
+
+    <script>
+        async function fetchUpdates() {
+            // Use the CSV URL for your Google Sheet
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQX3Ka3UWFKJSRasFJsHh-KeeLUSdV9hAME6KAYs9TR10HdjKlc-K-1nocwH2_yXWhPV3f4JxfYsE_L/pub?gid=0&single=true&output=csv';
+
+            // Add cache-busting to ensure fresh data is fetched
+            const cacheBuster = new Date().getTime();
+            const fetchUrl = `${url}&cache_buster=${cacheBuster}`;
+
+            try {
+                const response = await fetch(fetchUrl);
+                const data = await response.text();
+
+                // Split the CSV data into rows and columns
+                const rows = data.split('\n').slice(1); // Remove the header row
+                const updatesList = document.getElementById('updates-list');
+
+                rows.forEach((row, index) => {
+                    const cols = row.split(',');
+
+                    // Ensure the row has at least 3 columns: [Subject, Description, Media Link]
+                    if (cols.length >= 3) {
+                        const subject = cols[0].trim();
+                        const description = cols[1].trim();
+                        const mediaUrl = cols[2].trim();
+
+                        // Create the update item
+                        const updateItem = document.createElement('div');
+                        updateItem.classList.add('update-item');
+
+                        // Add update subject
+                        const updateTitleElem = document.createElement('h3');
+                        updateTitleElem.textContent = subject;
+                        updateItem.appendChild(updateTitleElem);
+
+                        // Add update description
+                        const updateDescriptionElem = document.createElement('p');
+                        updateDescriptionElem.textContent = description;
+                        updateItem.appendChild(updateDescriptionElem);
+
+                        // Add media (image or video)
+                        if (mediaUrl.endsWith('.jpg') || mediaUrl.endsWith('.png')) {
+                            // If it's an image, create an image element
+                            const mediaElem = document.createElement('img');
+                            mediaElem.src = mediaUrl;
+                            mediaElem.alt = subject;
+                            mediaElem.style.width = '100%'; // Adjust width as needed
+                            mediaElem.style.maxWidth = '600px';
+                            mediaElem.style.height = 'auto';
+                            updateItem.appendChild(mediaElem);
+                        } else if (mediaUrl.includes('youtube.com') || mediaUrl.includes('vimeo.com')) {
+                            // If it's a video URL, create an iframe
+                            const iframeElem = document.createElement('iframe');
+                            iframeElem.src = mediaUrl;
+                            iframeElem.width = '600';
+                            iframeElem.height = '400';
+                            iframeElem.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                            iframeElem.allowFullscreen = true;
+                            updateItem.appendChild(iframeElem);
+                        }
+
+                        // Append the update item to the updates list
+                        updatesList.appendChild(updateItem);
+                    } else {
+                        console.warn(`Row ${index + 1} is missing columns:`, row);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching updates:', error);
+            }
+        }
+
+        // Fetch the updates once the page loads
+        window.onload = fetchUpdates;
+    </script>
+
 </body>
 </html>
