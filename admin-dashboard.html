@@ -3,39 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Manage Products</title>
+    <title>Admin Dashboard - Manage Products</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .product-item img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Admin Dashboard</h1>
-        <p>Manage Products and Descriptions</p>
-    </header>
-
     <div class="container">
-        <h2>Update Product Information</h2>
-        <form action="process-admin.php" method="POST" enctype="multipart/form-data">
-            <label for="product-id">Select Product:</label>
-            <select id="product-id" name="product_id" required>
-                <option value="">Select a product...</option>
-                <!-- Dynamically populate products here via PHP/JS -->
-            </select><br><br>
+        <h1>Admin Dashboard</h1>
+        <p>Use this page to manage product descriptions and images.</p>
 
-            <label for="productname">Product Name:</label>
-            <input type="text" id="productname" name="productname" required><br><br>
+        <div id="products-container"></div>
 
-            <label for="productdesc">Product Description:</label>
-            <textarea id="productdesc" name="productdesc" rows="5" required></textarea><br><br>
+        <button id="add-product">Add New Product</button>
+        <button id="generate-json">Generate JSON</button>
 
-            <label for="productimage">Product Image (optional):</label>
-            <input type="file" id="productimage" name="productimage" accept="image/*"><br><br>
-
-            <button type="submit">Update Product</button>
-        </form>
+        <h2>Generated JSON</h2>
+        <textarea id="output-json" rows="10" readonly></textarea>
     </div>
 
-    <footer>
-        <p>&copy; 2024 PuneWeld Enterprises. All rights reserved.</p>
-    </footer>
+    <script>
+        // Initial products array (fetch from `products.json` in production)
+        let products = [];
+
+        // Load products.json dynamically (mocking for now)
+        async function loadProducts() {
+            try {
+                const response = await fetch('products.json');
+                products = await response.json();
+                renderProducts();
+            } catch (error) {
+                console.error('Error loading products:', error);
+                products = []; // Initialize empty array if fetch fails
+            }
+        }
+
+        // Render product items
+        function renderProducts() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = '';
+
+            products.forEach((product, index) => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('product-item');
+
+                productDiv.innerHTML = `
+                    <label for="name-${index}">Product Name</label>
+                    <input type="text" id="name-${index}" value="${product.name}" />
+
+                    <label for="description-${index}">Product Description</label>
+                    <textarea id="description-${index}">${product.description}</textarea>
+
+                    <label for="image-${index}">Product Image URL</label>
+                    <input type="text" id="image-${index}" value="${product.image}" />
+
+                    <img src="${product.image}" alt="${product.name}" />
+                    <button onclick="removeProduct(${index})">Remove Product</button>
+                `;
+
+                container.appendChild(productDiv);
+            });
+        }
+
+        // Add a new product
+        document.getElementById('add-product').addEventListener('click', () => {
+            products.push({ name: '', description: '', image: '' });
+            renderProducts();
+        });
+
+        // Remove a product
+        function removeProduct(index) {
+            products.splice(index, 1);
+            renderProducts();
+        }
+
+        // Generate JSON output
+        document.getElementById('generate-json').addEventListener('click', () => {
+            // Update products array with new values from the inputs
+            const updatedProducts = products.map((product, index) => {
+                const name = document.getElementById(`name-${index}`).value;
+                const description = document.getElementById(`description-${index}`).value;
+                const image = document.getElementById(`image-${index}`).value;
+                return { name, description, image };
+            });
+
+            // Generate JSON and display in the textarea
+            const jsonOutput = JSON.stringify(updatedProducts, null, 4);
+            document.getElementById('output-json').value = jsonOutput;
+
+            // Log for download or save action
+            console.log('Generated JSON:', jsonOutput);
+        });
+
+        // Initialize by loading existing products
+        loadProducts();
+    </script>
 </body>
 </html>
