@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Manage Products</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <p>Manage Products and Descriptions</p>
+    </header>
+
+    <div class="container">
+        <h2>Update Product Information</h2>
+        <form action="process-admin.php" method="POST" enctype="multipart/form-data">
+            <label for="product-id">Select Product:</label>
+            <select id="product-id" name="product_id" required>
+                <option value="">Select a product...</option>
+                <!-- Dynamically populate products here via PHP/JS -->
+            </select><br><br>
+
+            <label for="productname">Product Name:</label>
+            <input type="text" id="productname" name="productname" required><br><br>
+
+            <label for="productdesc">Product Description:</label>
+            <textarea id="productdesc" name="productdesc" rows="5" required></textarea><br><br>
+
+            <label for="productimage">Product Image (optional):</label>
+            <input type="file" id="productimage" name="productimage" accept="image/*"><br><br>
+
+            <button type="submit">Update Product</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PuneWeld Enterprises. All rights reserved.</p>
+    </footer>
+</body>
+</html>
