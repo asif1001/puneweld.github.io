@@ -9,8 +9,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4; /* Light gray background */
-            color: #333; /* Dark text color */
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         h1, h2 {
@@ -34,18 +34,10 @@
             background-color: #f9f9f9;
         }
 
-        .product-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-
         label {
             display: block;
             margin: 10px 0 5px;
             font-weight: bold;
-            color: #555;
         }
 
         input, textarea, button {
@@ -54,8 +46,6 @@
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            color: #333;
-            background-color: #fff;
         }
 
         button {
@@ -85,6 +75,7 @@
     </div>
 
     <script>
+        // Load existing products
         let products = [];
 
         async function loadProducts() {
@@ -98,6 +89,7 @@
             }
         }
 
+        // Render products in the admin UI
         function renderProducts() {
             const container = document.getElementById('products-container');
             container.innerHTML = '';
@@ -113,9 +105,8 @@
                     <label for="description-${index}">Product Description</label>
                     <textarea id="description-${index}">${product.description}</textarea>
 
-                    <label for="image-upload-${index}">Upload Product Image</label>
-                    <input type="file" id="image-upload-${index}" accept="image/*" onchange="handleImageUpload(event, ${index})" />
-                    <img id="image-preview-${index}" src="${product.image}" alt="${product.name}" style="max-width: 100%; margin-top: 10px;" />
+                    <label for="image-${index}">Image Path (e.g., images/Door-1.jpg)</label>
+                    <input type="text" id="image-${index}" value="${product.image}" />
 
                     <button onclick="removeProduct(${index})">Remove Product</button>
                 `;
@@ -124,40 +115,39 @@
             });
         }
 
-        function handleImageUpload(event, index) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById(`image-preview-${index}`).src = e.target.result;
-                    products[index].image = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
+        // Add a new product to the list
         document.getElementById('add-product').addEventListener('click', () => {
             products.push({ name: '', description: '', image: '' });
             renderProducts();
         });
 
+        // Remove a product from the list
         function removeProduct(index) {
             products.splice(index, 1);
             renderProducts();
         }
 
+        // Generate JSON for the updated products list
         document.getElementById('generate-json').addEventListener('click', () => {
             const updatedProducts = products.map((product, index) => {
                 const name = document.getElementById(`name-${index}`).value;
                 const description = document.getElementById(`description-${index}`).value;
-                return { name, description, image: product.image };
+                const image = document.getElementById(`image-${index}`).value;
+
+                return { name, description, image };
             });
 
-            const jsonOutput = JSON.stringify(updatedProducts, null, 4);
+            // Update the products array
+            products = updatedProducts;
+
+            // Generate JSON
+            const jsonOutput = JSON.stringify(products, null, 4);
             document.getElementById('output-json').value = jsonOutput;
+
             console.log('Generated JSON:', jsonOutput);
         });
 
+        // Load products on page load
         loadProducts();
     </script>
 </body>
