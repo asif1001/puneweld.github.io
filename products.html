@@ -6,7 +6,7 @@
     <title>PuneWeld Enterprises - Products & Services</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Basic styles for the container and the products */
+        /* Your existing styles remain unchanged */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -18,7 +18,6 @@
             color: #ffffff;
         }
 
-        /* Header styling */
         header {
             background-color: rgba(0, 0, 0, 0.6);
             color: #ffffff;
@@ -26,18 +25,6 @@
             text-align: center;
         }
 
-        header h1 {
-            font-size: 2.5em;
-            font-weight: bold;
-        }
-
-        header p {
-            font-size: 1.2em;
-            color: #ffffff;
-            margin-top: 5px;
-        }
-
-        /* Navigation bar styling */
         nav {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 10px;
@@ -55,7 +42,6 @@
             text-decoration: underline;
         }
 
-        /* Container for page content */
         .container {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.5);
@@ -65,7 +51,6 @@
             margin: 20px auto;
         }
 
-        /* Flexbox layout for products */
         #products-list {
             display: flex;
             flex-wrap: wrap;
@@ -73,7 +58,6 @@
             justify-content: space-between;
         }
 
-        /* Styling individual product items */
         .service-item {
             background-color: #fff;
             color: #000;
@@ -85,19 +69,6 @@
             box-sizing: border-box;
         }
 
-        .service-item h3 {
-            color: #333;
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        /* Justify product description text */
-        .service-item p {
-            color: #666;
-            font-size: 1em;
-            text-align: justify; /* Justify text for even alignment */
-        }
-
         .service-item img {
             max-width: 100%;
             height: auto;
@@ -105,20 +76,6 @@
             margin-bottom: 15px;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 900px) {
-            .service-item {
-                flex: 1 1 calc(50% - 20px);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .service-item {
-                flex: 1 1 100%;
-            }
-        }
-
-        /* Footer styling */
         footer {
             background-color: rgba(0, 0, 0, 0.8);
             color: #88BDBC;
@@ -131,14 +88,11 @@
     </style>
 </head>
 <body>
-
-    <!-- Header Section -->
     <header>
         <h1>PuneWeld Enterprises</h1>
         <p>Specialist in Industrial Fabrication Works</p>
     </header>
 
-    <!-- Navigation Section -->
     <nav>
         <a href="index.html">Home</a>
         <a href="products.html">Products & Services</a>
@@ -146,59 +100,40 @@
         <a href="contact.html">Contact Us</a>
     </nav>
 
-    <!-- Main Content -->
     <div class="container">
         <h2>Our Products & Services</h2>
-
-        <!-- Dynamically inserted products will appear here -->
         <div id="products-list"></div>
     </div>
 
-    <!-- Footer Section -->
     <footer>
         <p>&copy; 2024 PuneWeld Enterprises. All rights reserved.</p>
     </footer>
 
-    <!-- Script to Fetch Products from Google Sheets -->
+    <!-- Script to Fetch Products from products.json -->
     <script>
-    async function fetchProducts() {
-        const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT-yKfSdTnZxhF0PcNwfisKpstUO6QDNfisuvlwV7zzmEUZmLEtbeGVCRGZZZXT9TzDxia6tZ4LTdSK/pub?output=csv';
+        async function fetchProducts() {
+            const url = 'products.json'; // JSON file path in your GitHub repository
 
-        // Add a cache-busting query parameter to ensure fresh data is fetched
-        const cacheBuster = new Date().getTime();
-        const fetchUrl = `${url}&cache_buster=${cacheBuster}`;
+            try {
+                const response = await fetch(url);
+                const products = await response.json(); // Parse JSON data
+                const productsList = document.getElementById('products-list');
 
-        try {
-            const response = await fetch(fetchUrl);
-            const data = await response.text();
-
-            // Split the CSV into rows and columns
-            const rows = data.split('\n').slice(1); // Remove the header row
-            const productsList = document.getElementById('products-list');
-
-            rows.forEach((row, index) => {
-                const cols = row.split(',');
-
-                // Ensure that there are enough columns
-                if (cols.length >= 3) {
-                    const productName = cols[0].trim();
-                    const productDescription = cols[1].trim();
-                    const productImageUrl = cols[2].trim(); // Trimming spaces
-
+                products.forEach(product => {
                     const productItem = document.createElement('div');
                     productItem.classList.add('service-item');
 
                     const productNameElem = document.createElement('h3');
-                    productNameElem.textContent = productName;
+                    productNameElem.textContent = product.name;
                     productItem.appendChild(productNameElem);
 
                     const productDescriptionElem = document.createElement('p');
-                    productDescriptionElem.textContent = productDescription;
+                    productDescriptionElem.textContent = product.description;
                     productItem.appendChild(productDescriptionElem);
 
                     const productImageElem = document.createElement('img');
-                    productImageElem.src = productImageUrl;
-                    productImageElem.alt = productName;
+                    productImageElem.src = product.image;
+                    productImageElem.alt = product.name;
 
                     // Fallback to a placeholder image if the image fails to load
                     productImageElem.onerror = () => {
@@ -207,17 +142,13 @@
 
                     productItem.appendChild(productImageElem);
                     productsList.appendChild(productItem);
-                } else {
-                    console.warn(`Row ${index + 1} is missing columns:`, row);
-                }
-            });
-        } catch (error) {
-            console.error('Error fetching product data:', error);
+                });
+            } catch (error) {
+                console.error('Error fetching product data:', error);
+            }
         }
-    }
 
-    window.onload = fetchProducts;
+        fetchProducts();
     </script>
-
 </body>
 </html>
