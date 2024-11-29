@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Manage Products</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: #f4f4f4; /* Light gray background */
+            color: #333; /* Dark text color */
         }
 
         h1, h2 {
@@ -45,6 +45,7 @@
             display: block;
             margin: 10px 0 5px;
             font-weight: bold;
+            color: #555;
         }
 
         input, textarea, button {
@@ -53,6 +54,8 @@
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            color: #333;
+            background-color: #fff;
         }
 
         button {
@@ -82,10 +85,8 @@
     </div>
 
     <script>
-        // Initial products array (fetch from `products.json` in production)
         let products = [];
 
-        // Load products.json dynamically (mocking for now)
         async function loadProducts() {
             try {
                 const response = await fetch('products.json');
@@ -97,7 +98,6 @@
             }
         }
 
-        // Render product items
         function renderProducts() {
             const container = document.getElementById('products-container');
             container.innerHTML = '';
@@ -113,10 +113,10 @@
                     <label for="description-${index}">Product Description</label>
                     <textarea id="description-${index}">${product.description}</textarea>
 
-                    <label for="image-${index}">Product Image URL</label>
-                    <input type="text" id="image-${index}" value="${product.image}" />
+                    <label for="image-upload-${index}">Upload Product Image</label>
+                    <input type="file" id="image-upload-${index}" accept="image/*" onchange="handleImageUpload(event, ${index})" />
+                    <img id="image-preview-${index}" src="${product.image}" alt="${product.name}" style="max-width: 100%; margin-top: 10px;" />
 
-                    <img src="${product.image}" alt="${product.name}" />
                     <button onclick="removeProduct(${index})">Remove Product</button>
                 `;
 
@@ -124,37 +124,40 @@
             });
         }
 
-        // Add a new product
+        function handleImageUpload(event, index) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById(`image-preview-${index}`).src = e.target.result;
+                    products[index].image = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         document.getElementById('add-product').addEventListener('click', () => {
             products.push({ name: '', description: '', image: '' });
             renderProducts();
         });
 
-        // Remove a product
         function removeProduct(index) {
             products.splice(index, 1);
             renderProducts();
         }
 
-        // Generate JSON output
         document.getElementById('generate-json').addEventListener('click', () => {
-            // Update products array with new values from the inputs
             const updatedProducts = products.map((product, index) => {
                 const name = document.getElementById(`name-${index}`).value;
                 const description = document.getElementById(`description-${index}`).value;
-                const image = document.getElementById(`image-${index}`).value;
-                return { name, description, image };
+                return { name, description, image: product.image };
             });
 
-            // Generate JSON and display in the textarea
             const jsonOutput = JSON.stringify(updatedProducts, null, 4);
             document.getElementById('output-json').value = jsonOutput;
-
-            // Log for download or save action
             console.log('Generated JSON:', jsonOutput);
         });
 
-        // Initialize by loading existing products
         loadProducts();
     </script>
 </body>
