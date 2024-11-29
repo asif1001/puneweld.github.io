@@ -1,12 +1,10 @@
 [
     {
-        "id": 1,
         "name": "Industrial Welding Machine",
         "description": "High-performance industrial welding machine.",
         "image": "images/product1.jpg"
     },
     {
-        "id": 2,
         "name": "Metal Fabrication Kit",
         "description": "Comprehensive metal fabrication kit for professionals.",
         "image": "images/product2.jpg"
